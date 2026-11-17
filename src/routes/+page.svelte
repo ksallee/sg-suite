@@ -2,7 +2,7 @@
 	// The page: the stack drawn, then the projects by group, each a panel, with the rail beside
 	// them on a wide screen. It only renders `$lib/pure/projects`.
 	import { grouped, projects, relations } from '$lib/pure/projects';
-	import { lit } from '$lib/pure/timing';
+	import { lit, walk } from '$lib/pure/timing';
 	import { reading } from '$lib/reading.svelte';
 	import Hero from '$lib/components/Hero.svelte';
 	import StackTree from '$lib/components/StackTree.svelte';
@@ -15,10 +15,29 @@
 
 	/** The project hovered or focused anywhere on the page. */
 	let active = $state<string | null>(null);
-	const activate = (name: string | null) => (active = name);
+	/**
+	 * A clear waits a moment, and the next hover cancels it: moving from one row or node to the
+	 * next never passes through "nothing hovered".
+	 */
+	let clearing: ReturnType<typeof setTimeout> | undefined;
+	const activate = (name: string | null) => {
+		clearTimeout(clearing);
+		if (name) active = name;
+		else clearing = setTimeout(() => (active = null), 120);
+	};
 	/** The panels being read, from the one scroll spy. */
 	const read = reading(order);
-	const shown = $derived(lit(active, read.here, relations));
+	/**
+	 * What is lit, and how the light gets there from what was lit: kept wires stay drawn, the rest
+	 * shrink to where the paths meet, then the new ones grow. `before` is the last lit set.
+	 */
+	let before = new Map<string, number>();
+	const shown = $derived.by(() => {
+		const next = lit(active, read.here, relations);
+		next.hops = walk(before, next.edges);
+		before = next.edges;
+		return next;
+	});
 
 	/** Each panel names a view timeline; the rail, a sibling, reads them through this scope. */
 	const scope = order.map((n) => `--w-${n}`).join(', ');
@@ -27,7 +46,17 @@
 <svelte:head><title>sg-suite</title></svelte:head>
 
 <!-- `top`: the target of "Back to top", so focus moves there too, not only the scroll. -->
-<div class="page" id="top">
+<!-- A click on a link to a panel (rail, graph, legend, builds on, used by) jumps the reading
+     there, so the light goes to that panel's path without walking every panel scrolled past. -->
+<div
+	class="page"
+	id="top"
+	role="presentation"
+	onclick={(e) => {
+		const name = (e.target as Element).closest('a[href^="#"]')?.getAttribute('href')?.slice(1);
+		if (name && order.includes(name)) read.jump(name);
+	}}
+>
 	<main class="mx-auto max-w-[1320px] px-4 sm:px-8 lg:px-12">
 		<Hero {projects} lit={shown} onactivate={activate} />
 

@@ -41,7 +41,7 @@
 	style="--hue: var(--g-{p.group})"
 	onpointerenter={() => onactivate(p.name)}
 	onpointerleave={() => onactivate(null)}
-	onfocusin={() => onactivate(p.name)}
+	onfocusin={(e) => (e.target as Element).matches(':focus-visible') && onactivate(p.name)}
 	onfocusout={() => onactivate(null)}
 >
 	<h3 class="bar">
@@ -126,18 +126,25 @@
 	.panel.on {
 		border-color: color-mix(in oklab, var(--hue) var(--hover-tint), var(--node-edge));
 	}
-	/* Landing here from the stack: an outline flashes once, as an overlay. */
+	/*
+	 * Landing here from a link: an outline flashes once, as an overlay, in a darker version of the
+	 * hover border, so it reads as the panel's own colour. In dark, the full group hue: darker
+	 * would sink into the page.
+	 */
 	.panel::after {
 		content: '';
 		position: absolute;
 		inset: -1px;
-		border: 2px solid var(--lit);
+		border: 2px solid color-mix(in oklab, var(--hue) 78%, black);
 		border-radius: inherit;
 		opacity: 0;
 		pointer-events: none;
 	}
 	:global(:target) > .panel::after {
 		animation: landed 1100ms var(--ease-out);
+	}
+	:global(.dark) .panel::after {
+		border-color: var(--hue);
 	}
 	@keyframes landed {
 		0%,
@@ -193,7 +200,7 @@
 		place-items: center;
 		margin: 0;
 		padding: 16px 16px 30px;
-		background: var(--code-bg);
+		background: var(--viewer-bg);
 	}
 	.format {
 		position: relative;
@@ -206,7 +213,7 @@
 		height: 100%;
 		object-fit: contain;
 		/* The format box, a hairline as Nuke draws it round the frame. */
-		outline: 1px solid oklch(1 0 0 / 0.24);
+		outline: 1px solid var(--border);
 	}
 	.size {
 		position: absolute;
@@ -215,12 +222,12 @@
 		font-family: var(--font-mono);
 		font-size: 10.5px;
 		line-height: 1;
-		color: oklch(1 0 0 / 0.5);
+		color: var(--muted-foreground);
 	}
 	.viewer pre {
 		width: 100%;
 		margin: 0;
-		color: var(--code-fg);
+		color: var(--foreground);
 		font-family: var(--font-mono);
 		font-size: clamp(11.5px, 3vw, 12.5px);
 		line-height: 1.75;

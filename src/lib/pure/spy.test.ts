@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { inView, passed } from './spy.ts';
+import { inView, passed, readingLine } from './spy.ts';
 
 // Cards as a page lays them out: two in the first row, one row each after.
 const spans = [
@@ -42,5 +42,23 @@ describe('passed', () => {
 	it('gives nothing above the first card, and every card past the last', () => {
 		expect(passed(spans, 60)).toEqual([]);
 		expect(passed(spans, 5000)).toEqual(['a', 'b', 'c', 'd', 'e']);
+	});
+});
+
+describe('readingLine', () => {
+	it('sits near the top, so a panel a link lands on is the one read, not the one below', () => {
+		// A link lands a panel 24px down; the shortest panel is 285px, so the next starts by 309px.
+		for (const h of [720, 900, 1200, 1600]) {
+			const line = readingLine(h);
+			const spans = [
+				{ name: 'clicked', top: 24, bottom: 309 },
+				{ name: 'next', top: 333, bottom: 700 }
+			];
+			expect(inView(spans, line, false), `${h}px`).toEqual(['clicked']);
+		}
+	});
+
+	it('stays above the middle of a short window', () => {
+		expect(readingLine(300)).toBe(120);
 	});
 });
