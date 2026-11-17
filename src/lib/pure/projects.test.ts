@@ -63,11 +63,13 @@ describe('projects', () => {
 	});
 
 	it('installs only listed packages in a code snippet', () => {
-		for (const p of projects.filter((p) => p.code)) {
-			for (const [, name] of p.code!.matchAll(/pip install (\S+)/g)) {
-				expect(p.packages?.map((k) => k.name), p.name).toContain(name);
-			}
-		}
+		const unlisted = projects.flatMap((p) =>
+			[...(p.code ?? '').matchAll(/pip install (\S+)/g)]
+				.map(([, name]) => name)
+				.filter((name) => !p.packages?.some((k) => k.name === name))
+				.map((name) => `${p.name}: ${name}`)
+		);
+		expect(unlisted).toEqual([]);
 	});
 
 	it('puts every project in a known group, and every group has a project', () => {
