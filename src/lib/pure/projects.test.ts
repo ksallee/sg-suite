@@ -20,6 +20,17 @@ describe('projects', () => {
 		expect(projects.find((p) => p.name === 'sg-mockgun')!.license).toBe('BSD-3-Clause');
 	});
 
+	it('says the problem each project solves and the fix, short and in plain words', () => {
+		for (const p of projects) {
+			for (const text of [p.problem, p.fix]) {
+				expect(text.trim().length, p.name).toBeGreaterThan(0);
+				expect(text.split(/\s+/).length, `${p.name}: ${text}`).toBeLessThanOrEqual(32);
+				// Kevin's voice: no dash as punctuation.
+				expect(text, p.name).not.toMatch(/[\u2013\u2014]| - /);
+			}
+		}
+	});
+
 	it('names each project once', () => {
 		const names = projects.map((p) => p.name);
 		expect(new Set(names).size).toBe(names.length);
