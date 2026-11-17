@@ -90,7 +90,7 @@ export const projects: Project[] = [
 	{
 		name: 'sg-mockgun',
 		line: "Replaces shotgun_api3's mockgun with an in-memory Flow PT mock that answers as a live site answers over api3.",
-		problem: "shotgun_api3's mockgun answers many calls unlike a live site, and has no event log. Tests pass on it, then the code fails on the site.",
+		problem: "shotgun_api3's mockgun lacks many calls and answers others unlike a live site. Upstream fixes are slow: community pull requests stay open for years.",
 		fix: 'Each answer is measured on a live site by a probe and recorded in docs/api3/. tk-core\'s test suite passes on it. Installing it adds a pytest plugin.',
 		repo: gh('sg-mockgun'),
 		packages: [
