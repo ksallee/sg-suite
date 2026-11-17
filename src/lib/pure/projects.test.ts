@@ -15,6 +15,11 @@ describe('projects', () => {
 		}
 	});
 
+	it('gives every entry its licence as an SPDX id', () => {
+		for (const p of projects) expect(['MIT', 'BSD-3-Clause'], p.name).toContain(p.license);
+		expect(projects.find((p) => p.name === 'sg-mockgun')!.license).toBe('BSD-3-Clause');
+	});
+
 	it('names each project once', () => {
 		const names = projects.map((p) => p.name);
 		expect(new Set(names).size).toBe(names.length);

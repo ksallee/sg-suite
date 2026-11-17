@@ -181,6 +181,8 @@ html:not(.dark) {
 	--canvas-dot: color-mix(in oklch, var(--foreground) 13%, transparent);
 	--code-bg: oklch(0.235 0.012 241.9);
 	--code-fg: oklch(0.9 0.008 241.9);
+	/* A panel's Viewer: a light grey a step under the white card. */
+	--viewer-bg: oklch(0.975 0.003 241.9);
 	--g-foundation: oklch(0.6 0.105 195);
 	--g-libraries: var(--chart-2);
 	--g-apps: var(--chart-3);
@@ -197,6 +199,8 @@ html:not(.dark) {
 	--node-lift: oklch(0 0 0 / 0.7);
 	--canvas-dot: color-mix(in oklch, var(--foreground) 11%, transparent);
 	--code-bg: oklch(0.165 0.012 241.9);
+	/* In dark, a step lighter than the card: a real light grey would glare. */
+	--viewer-bg: oklch(0.28 0.02 241.9);
 	--g-foundation: oklch(0.74 0.1 195);
 	--g-integrations: oklch(0.72 0.14 300);
 }

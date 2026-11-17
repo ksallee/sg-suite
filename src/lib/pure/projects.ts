@@ -35,12 +35,17 @@ export interface Package {
 	install: string;
 }
 
+/** SPDX licence ids the projects use. */
+export type License = 'MIT' | 'BSD-3-Clause';
+
 export interface Project {
 	name: string;
 	line: string;
 	repo: string;
 	site?: string;
 	group: GroupId;
+	/** From the repo's LICENSE. sg-mockgun keeps shotgun_api3's BSD-3-Clause. */
+	license: License;
 	image?: Picture;
 	/** Shown in place of a picture when a project has neither a screenshot nor a site. */
 	code?: string;
@@ -66,6 +71,7 @@ export const projects: Project[] = [
 		],
 		site: 'https://sg-groundtruth.vercel.app',
 		group: 'foundation',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-groundtruth.webp',
 			alt: 'The sg-groundtruth site',
@@ -82,6 +88,7 @@ export const projects: Project[] = [
 			{ registry: 'PyPI', name: 'sg-mockgun', url: 'https://pypi.org/project/sg-mockgun/', install: 'pip install sg-mockgun' }
 		],
 		group: 'foundation',
+		license: 'BSD-3-Clause',
 		code: [
 			'pip install sg-mockgun',
 			'',
@@ -111,6 +118,7 @@ export const projects: Project[] = [
 		],
 		site: 'https://sg-widgets.vercel.app',
 		group: 'libraries',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-widgets.webp',
 			alt: 'One screen: a table, a tree, a grid, the pickers and the editors',
@@ -127,6 +135,7 @@ export const projects: Project[] = [
 			{ registry: 'PyPI', name: 'sg-widgets-qt', url: 'https://pypi.org/project/sg-widgets-qt/', install: 'pip install "sg-widgets-qt[pyside6]"' }
 		],
 		group: 'libraries',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-widgets-qt.webp',
 			alt: 'An entity table grouped by status, with status badges and thumbnails',
@@ -141,6 +150,7 @@ export const projects: Project[] = [
 		repo: gh('sg-notes'),
 		site: 'https://sg-notes.vercel.app',
 		group: 'apps',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-notes.webp',
 			alt: "The lead view: a project's notes grouped under the records they are about, with one thread open",
@@ -155,6 +165,7 @@ export const projects: Project[] = [
 		repo: gh('sg-onset'),
 		site: 'https://sg-onset.vercel.app',
 		group: 'apps',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-onset.webp',
 			alt: 'The sg-onset site',
@@ -169,6 +180,7 @@ export const projects: Project[] = [
 		repo: gh('sg-fields-setup'),
 		site: 'https://sg-fields-setup.vercel.app',
 		group: 'apps',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-fields-setup.webp',
 			alt: 'The editor',
@@ -183,6 +195,7 @@ export const projects: Project[] = [
 		repo: gh('sg-task-templates'),
 		site: 'https://sg-task-templates.vercel.app',
 		group: 'apps',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-task-templates.webp',
 			alt: "A Shot with Layout, Anim and Comp gets a template that adds Light. Flow PT's apply duplicates Layout and Anim and deletes Comp, orphaning its 3 Versions. This app links the three and creates Light.",
@@ -200,6 +213,7 @@ export const projects: Project[] = [
 		],
 		site: 'https://sg-comfyui.vercel.app',
 		group: 'integrations',
+		license: 'MIT',
 		image: {
 			src: '/screens/sg-comfyui.webp',
 			alt: 'The example workflow: an image into SG Publish, and SG Load reading the Version back',
