@@ -1,6 +1,7 @@
 # sg-suite
 
 The sg- projects on one page: tools and libraries for Flow Production Tracking, formerly ShotGrid.
+Live at [sg-suite.vercel.app](https://sg-suite.vercel.app).
 
 ## Projects
 
@@ -15,3 +16,22 @@ The sg- projects on one page: tools and libraries for Flow Production Tracking, 
 | [sg-fields-setup](https://github.com/ksallee/sg-fields-setup) | Named sets of field definitions: import from spreadsheets, compare with a live site, install. | [sg-fields-setup.vercel.app](https://sg-fields-setup.vercel.app) |
 | [sg-task-templates](https://github.com/ksallee/sg-task-templates) | Apply a Task Template to entities that already have Tasks. Only the missing Tasks are created. | [sg-task-templates.vercel.app](https://sg-task-templates.vercel.app) |
 | [sg-comfyui](https://github.com/ksallee/sg-comfyui) | ComfyUI nodes that publish a generation as a Version and load a Version's media back. | [sg-comfyui.vercel.app](https://sg-comfyui.vercel.app) |
+
+## Adding a project
+
+One entry in `src/lib/pure/projects.ts` and one row in the table above. A test fails when the two
+disagree. The entry names its group, what it builds on (`relations`), its picture in
+`static/screens/` and its packages. List a package only once it is live on its registry.
+
+## Development
+
+    pnpm install
+    pnpm dev          # the page
+    pnpm test         # the pure modules
+    pnpm check
+    pnpm build        # prerenders the page
+
+`pnpm shoot <path> [name] [--full] [--mobile] [--dark] [--reduced] [--frames=n]` writes screenshots
+to `shots/`, against a dev server on port 5199 (`pnpm dev --port 5199`).
+
+Deployed on Vercel from `main` alone: `vercel.json` skips every other branch.
