@@ -89,22 +89,23 @@ export const projects: Project[] = [
 	},
 	{
 		name: 'sg-mockgun',
-		line: 'Mockgun from shotgun_api3, standalone, extended with behaviour recorded by sg-groundtruth.',
-		problem: "Mockgun has no schema field writes and no event log. Code tested on it never meets a live site's answers.",
-		fix: 'Mockgun on its own. Field writes and the event log answer as a Flow PT site does, faults and wording included.',
+		line: "Replaces shotgun_api3's mockgun with an in-memory Flow PT mock that answers as a live site answers over api3.",
+		problem: "shotgun_api3's mockgun answers many calls unlike a live site, and has no event log. Tests pass on it, then the code fails on the site.",
+		fix: 'Each answer is measured on a live site by a probe and recorded in docs/api3/. tk-core\'s test suite passes on it. Installing it adds a pytest plugin.',
 		repo: gh('sg-mockgun'),
 		packages: [
 			{ registry: 'PyPI', name: 'sg-mockgun', url: 'https://pypi.org/project/sg-mockgun/', install: 'pip install sg-mockgun' }
 		],
+		site: 'https://sg-mockgun.vercel.app',
 		group: 'foundation',
 		license: 'BSD-3-Clause',
-		code: [
-			'pip install sg-mockgun',
-			'',
-			'from sg_mockgun import Shotgun, schemas',
-			'Shotgun.set_schema_paths(*schemas.paths())',
-			'sg = Shotgun("https://mock.example.com", script_name="x", api_key="y")'
-		].join('\n')
+		image: {
+			src: '/screens/sg-mockgun.webp',
+			alt: 'The sg-mockgun site',
+			width: 1440,
+			height: 900,
+			from: 'site'
+		}
 	},
 	{
 		name: 'sg-widgets',
