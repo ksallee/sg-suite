@@ -2,6 +2,7 @@
 	// The page: the stack drawn, then the projects by group, each a panel, with the rail beside
 	// them on a wide screen. It only renders `$lib/pure/projects`.
 	import { grouped, projects, relations } from '$lib/pure/projects';
+	import { headFor } from '$lib/pure/seo';
 	import { lit, walk } from '$lib/pure/timing';
 	import { reading } from '$lib/reading.svelte';
 	import Hero from '$lib/components/Hero.svelte';
@@ -43,7 +44,8 @@
 	const scope = order.map((n) => `--w-${n}`).join(', ');
 </script>
 
-<svelte:head><title>sg-suite</title></svelte:head>
+<!-- Title, description, link preview, JSON-LD: all from `$lib/pure/seo`, all ours, so @html is safe. -->
+<svelte:head>{@html headFor()}</svelte:head>
 
 <!-- `top`: the target of "Back to top", so focus moves there too, not only the scroll. -->
 <!-- A click on a link to a panel (rail, graph, legend, builds on, used by) jumps the reading
