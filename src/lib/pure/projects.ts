@@ -227,7 +227,7 @@ export const projects: Project[] = [
 	},
 	{
 		name: 'sg-comfyui',
-		line: "ComfyUI nodes that publish a generation as a Version and load a Version's media back.",
+		line: 'ComfyUI nodes and a sidebar tab that publish a generation as a Version, find Versions and load them back.',
 		problem: 'On a big project, the right Version is hard to find from ComfyUI. What it makes leaves with no record of model, prompt or seed.',
 		fix: "The SG tab searches a project's Versions, shows their provenance and adds them to the graph. Each generation is published as a Version, with its model, prompt, seed and workflow.",
 		repo: gh('sg-comfyui'),
@@ -239,9 +239,9 @@ export const projects: Project[] = [
 		license: 'MIT',
 		image: {
 			src: '/screens/sg-comfyui.webp',
-			alt: 'The example workflow: an image into SG Publish, and SG Load reading the Version back',
-			width: 2882,
-			height: 920,
+			alt: "The SG tab: a Version's provenance, with the model, prompt and seed that made it",
+			width: 612,
+			height: 940,
 			from: 'readme'
 		}
 	}
