@@ -40,7 +40,12 @@ export type License = 'MIT' | 'BSD-3-Clause';
 
 export interface Project {
 	name: string;
+	/** What it is, in one line: the README table, link previews and llms.txt. */
 	line: string;
+	/** The pain people have today, from the project's own docs or Kevin. The panel leads with it. */
+	problem: string;
+	/** What the project does about it. */
+	fix: string;
 	repo: string;
 	site?: string;
 	group: GroupId;
@@ -65,6 +70,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-groundtruth',
 		line: 'Recorded behaviour of the Flow PT REST API: one probe per question, the answer verbatim. The corpus the rest builds on.',
+		problem: 'The REST docs are incomplete and in places wrong. Sort on a misspelled field: 200, sort ignored, no warning.',
+		fix: 'Each probe asks a live site one question and records the answer verbatim. Doubt an entry, re-run its probe.',
 		repo: gh('sg-groundtruth'),
 		packages: [
 			{ registry: 'PyPI', name: 'sg-groundtruth', url: 'https://pypi.org/project/sg-groundtruth/', install: 'pip install sg-groundtruth' }
@@ -83,6 +90,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-mockgun',
 		line: 'Mockgun from shotgun_api3, standalone, extended with behaviour recorded by sg-groundtruth.',
+		problem: "Mockgun has no schema field writes and no event log. Code tested on it never meets a live site's answers.",
+		fix: 'Mockgun on its own. Field writes and the event log answer as a Flow PT site does, faults and wording included.',
 		repo: gh('sg-mockgun'),
 		packages: [
 			{ registry: 'PyPI', name: 'sg-mockgun', url: 'https://pypi.org/project/sg-mockgun/', install: 'pip install sg-mockgun' }
@@ -100,6 +109,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-widgets',
 		line: 'shadcn-compatible widgets for React and Svelte: pickers, tables, trees, filter and field editors.',
+		problem: 'There are no good ready-made Flow PT widgets for web apps.',
+		fix: 'Pickers, tables, trees and editors for React and Svelte, ready for agentic coding. shadcn compatible, so you bring your own components for the rest.',
 		repo: gh('sg-widgets'),
 		packages: [
 			{
@@ -130,6 +141,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-widgets-qt',
 		line: 'The Qt port of sg-widgets, for tools inside Maya, Houdini, Nuke, RV or a standalone app.',
+		problem: 'The Flow PT Qt widgets that exist come with Toolkit. They are tied to it, and not great.',
+		fix: 'Pickers, editors, tables and trees for Maya, Houdini, Nuke, RV or your own app. No Toolkit. They run on whichever Qt binding the host loaded.',
 		repo: gh('sg-widgets-qt'),
 		packages: [
 			{ registry: 'PyPI', name: 'sg-widgets-qt', url: 'https://pypi.org/project/sg-widgets-qt/', install: 'pip install "sg-widgets-qt[pyside6]"' }
@@ -147,6 +160,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-notes',
 		line: 'Every note in a project under the record it is about, threaded, searched and acted on in bulk.',
+		problem: 'The Inbox sits at 99+ with no filters. Nothing shows who owes a reply. You cannot forward a note.',
+		fix: 'Notes grouped under their shot, asset or version. Reply and close in bulk, forward a copy, see who owes the next word.',
 		repo: gh('sg-notes'),
 		site: 'https://sg-notes.vercel.app',
 		group: 'apps',
@@ -162,6 +177,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-onset',
 		line: 'On-set VFX data capture: slates, takes, setups, lenses. Offline-first PWA, iPad first.',
+		problem: 'Flow PT has no offline mode and no capture app. Wranglers log takes elsewhere and import a CSV later.',
+		fix: 'An iPad app for slates, takes, lenses and photos that works with no network. Sync to Flow PT is next.',
 		repo: gh('sg-onset'),
 		site: 'https://sg-onset.vercel.app',
 		group: 'apps',
@@ -177,6 +194,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-fields-setup',
 		line: 'Named sets of field definitions: import from spreadsheets, compare with a live site, install.',
+		problem: "Custom fields are made by hand in Flow PT's admin screens, often thirty at once. Slow, and easy to get wrong.",
+		fix: 'Keep the fields as a named set, filled from a spreadsheet. Compare it with the site, read the plan, then install.',
 		repo: gh('sg-fields-setup'),
 		site: 'https://sg-fields-setup.vercel.app',
 		group: 'apps',
@@ -192,6 +211,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-task-templates',
 		line: 'Apply a Task Template to entities that already have Tasks. Only the missing Tasks are created.',
+		problem: 'Switch a Shot to an overlapping template and Flow PT flags every Task. Keep them: duplicates. Delete them: orphaned Versions.',
+		fix: 'Tasks are matched by name and Step and linked. Only the missing ones are created. Every change shows before it is written.',
 		repo: gh('sg-task-templates'),
 		site: 'https://sg-task-templates.vercel.app',
 		group: 'apps',
@@ -207,6 +228,8 @@ export const projects: Project[] = [
 	{
 		name: 'sg-comfyui',
 		line: "ComfyUI nodes that publish a generation as a Version and load a Version's media back.",
+		problem: 'On a big project, the right Version is hard to find from ComfyUI. What it makes leaves with no record of model, prompt or seed.',
+		fix: "The SG tab searches a project's Versions, shows their provenance and adds them to the graph. Each generation is published as a Version, with its model, prompt, seed and workflow.",
 		repo: gh('sg-comfyui'),
 		packages: [
 			{ registry: 'Comfy Registry', name: 'sg-comfyui', url: 'https://registry.comfy.org/nodes/sg-comfyui', install: 'comfy node install sg-comfyui' }

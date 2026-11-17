@@ -69,8 +69,15 @@
 		</figure>
 
 		<div class="knobs">
-			<p class="line">{p.line}</p>
 			<dl>
+				<div class="knob">
+					<dt>problem</dt>
+					<dd class="prose">{p.problem}</dd>
+				</div>
+				<div class="knob">
+					<dt>fix</dt>
+					<dd class="prose">{p.fix}</dd>
+				</div>
 				<div class="knob">
 					<dt>repo</dt>
 					<dd class="link"><LinkButton project={p} to="repo" /><span class="val">{repoSlug(p.repo)}</span></dd>
@@ -242,7 +249,9 @@
 		gap: 16px;
 		padding: 18px 16px;
 	}
-	.line {
+	/* The problem and the fix: the panel's text, set as the line was, on the knobs' baseline. */
+	.prose {
+		display: block;
 		max-width: 56ch;
 		font-size: 15px;
 		line-height: 1.55;
@@ -372,15 +381,9 @@
 			grid-row: 1;
 			padding: 20px 22px 20px 12px;
 		}
-		.line {
-			padding-left: calc(var(--label-w) + 14px);
-		}
 	}
 	@media (width < 48rem) {
 		.knobs {
-			padding-left: 8px;
-		}
-		.line {
 			padding-left: 8px;
 		}
 		/* No room for the address beside the button on a phone: the button fills the knob. */

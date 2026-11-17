@@ -36,6 +36,7 @@ export function jsonLd(): Record<string, unknown> {
 					'@type': 'SoftwareSourceCode',
 					name: p.name,
 					description: p.line,
+					abstract: `${p.problem} ${p.fix}`,
 					codeRepository: p.repo,
 					url: p.site ?? p.repo,
 					license: `https://spdx.org/licenses/${p.license}.html`,
@@ -94,6 +95,7 @@ export function llmsTxt(): string {
 		for (const p of list) {
 			const r = relationOf(p);
 			out.push(`### ${p.name}`, '', p.line, '');
+			out.push(`- Problem: ${p.problem}`, `- Fix: ${p.fix}`);
 			out.push(`- Repository: ${p.repo}`);
 			if (p.site) out.push(`- Site: ${p.site}`);
 			out.push(`- Licence: ${p.license}`);

@@ -55,6 +55,7 @@ describe('jsonLd', () => {
 			const item = items.find((i) => i.item.name === p.name)!.item;
 			expect(item['@type']).toBe('SoftwareSourceCode');
 			expect(item.description).toBe(p.line);
+			expect(item.abstract).toBe(`${p.problem} ${p.fix}`);
 			expect(item.codeRepository).toBe(p.repo);
 			expect(item.license).toBe(`https://spdx.org/licenses/${p.license}.html`);
 			expect(item.url).toBe(p.site ?? p.repo);
@@ -84,6 +85,8 @@ describe('llmsTxt', () => {
 		for (const p of projects) {
 			expect(text, p.name).toContain(`### ${p.name}`);
 			expect(text, p.name).toContain(p.line);
+			expect(text, p.name).toContain(`- Problem: ${p.problem}`);
+			expect(text, p.name).toContain(`- Fix: ${p.fix}`);
 			expect(text, p.name).toContain(p.repo);
 			if (p.site) expect(text, p.name).toContain(p.site);
 			for (const k of p.packages ?? []) expect(text, `${p.name} ${k.name}`).toContain(k.install);
