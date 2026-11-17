@@ -1,0 +1,41 @@
+{
+	"name": "sg-suite",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"description": "The sg- projects on one page: tools and libraries for Flow Production Tracking.",
+	"packageManager": "pnpm@12.18.0",
+	"engines": {
+		"node": ">=22 <25"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"test": "vitest --run",
+		"shoot": "node tools/shoot.mjs"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-vercel": "^6.3.5",
+		"@sveltejs/kit": "^2.70.4",
+		"@sveltejs/vite-plugin-svelte": "^7.3.1",
+		"@tailwindcss/vite": "^4.3.5",
+		"@types/node": "^22.20.5",
+		"playwright": "^1.65.1",
+		"svelte": "^5.57.3",
+		"svelte-check": "^4.7.8",
+		"tailwindcss": "^4.3.5",
+		"typescript": "^6.0.3",
+		"vite": "^8.3.8",
+		"vitest": "^4.1.12"
+	},
+	"dependencies": {
+		"@fontsource-variable/bricolage-grotesque": "^5.3.0",
+		"@fontsource-variable/geist": "^5.3.0",
+		"@fontsource-variable/geist-mono": "^5.3.0",
+		"@lucide/svelte": "^1.73.0",
+		"tw-animate-css": "^1.4.0"
+	}
+}
