@@ -5,6 +5,7 @@
 	import type { Project } from '$lib/pure/projects';
 	import { grouped } from '$lib/pure/projects';
 	import { cqi, heroLayout, titleGrid } from '$lib/pure/hero';
+	import { LINE } from '$lib/pure/seo';
 	import type { Lit } from '$lib/pure/timing';
 	import StackDiagram from './StackDiagram.svelte';
 	import StackTree from './StackTree.svelte';
@@ -21,7 +22,7 @@
 <div class="hero">
 	<header class="type" style="--t-l: {cqi(grid.left)}; --t-w: {cqi(grid.titleW)}; --l-w: {cqi(grid.lineW)}">
 		<h1>sg-suite</h1>
-		<p>The sg- projects on one page: tools and libraries for Flow Production Tracking, formerly ShotGrid.</p>
+		<p>{LINE}</p>
 	</header>
 
 	<section class="canvas" aria-label="sg-suite">

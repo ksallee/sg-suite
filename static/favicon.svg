@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+	<!-- The page's graph, small: two nodes wired into the base, each with its group swatch. -->
+	<rect width="32" height="32" rx="7" fill="#1b1e23" />
+	<g fill="none" stroke="#8b929c" stroke-width="1.6" stroke-linecap="round">
+		<path d="M16 20.5 C16 16.5 9 15.5 9 12" />
+		<path d="M16 20.5 C16 16.5 23 15.5 23 12" />
+	</g>
+	<g fill="#f4f6f8">
+		<rect x="3.5" y="5" width="11" height="7" rx="1.6" />
+		<rect x="17.5" y="5" width="11" height="7" rx="1.6" />
+		<rect x="10.5" y="20.5" width="11" height="7" rx="1.6" />
+	</g>
+	<rect x="5.5" y="7.25" width="2.5" height="2.5" rx="0.5" fill="#6a9a2b" />
+	<rect x="19.5" y="7.25" width="2.5" height="2.5" rx="0.5" fill="#f5a524" />
+	<rect x="12.5" y="22.75" width="2.5" height="2.5" rx="0.5" fill="#13938f" />
+</svg>
