@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Relation } from './projects.ts';
 import { projects, relations } from './projects.ts';
 import { layered, treeRows } from './stack.ts';
-import { HOP, lit, litPlan, nodeDelays, rowDelays } from './timing.ts';
+import { HOP, lit, litPlan, nodeDelays, rowDelays, walk } from './timing.ts';
 
 const rels: Relation[] = [
 	{ from: 'b', to: 'base', kind: 'on' },
@@ -13,24 +13,53 @@ const rels: Relation[] = [
 describe('litPlan', () => {
 	const path = ['c', 'b', 'base'];
 
-	it('lights a path from the base up, one hop at a time', () => {
+	it('lights a path, each edge with its height above the base in hops', () => {
 		const plan = litPlan([path]);
 		expect([...plan.nodes].sort()).toEqual(['b', 'base', 'c']);
 		expect(plan.edges.get('b>base')).toBe(0);
-		expect(plan.edges.get('c>b')).toBe(HOP);
+		expect(plan.edges.get('c>b')).toBe(1);
 	});
 
-	it('joins several paths, each shared edge at its earliest time', () => {
+	it('joins several paths, a shared edge once', () => {
 		const plan = litPlan([path, ['p', 'b', 'base']]);
 		expect([...plan.nodes].sort()).toEqual(['b', 'base', 'c', 'p']);
-		expect(plan.edges.get('b>base')).toBe(0);
-		expect(plan.edges.get('c>b')).toBe(HOP);
-		expect(plan.edges.get('p>b')).toBe(HOP);
+		expect([...plan.edges]).toEqual([
+			['c>b', 1],
+			['b>base', 0],
+			['p>b', 1]
+		]);
 	});
 
 	it('is empty with no path', () => {
 		const plan = litPlan([]);
 		expect(plan.nodes.size + plan.edges.size).toBe(0);
+	});
+});
+
+describe('walk', () => {
+	const m = (o: Record<string, number>) => new Map(Object.entries(o));
+
+	it('leaves alone what stays lit, and draws what is new from where the light stops', () => {
+		expect(walk(m({ 'b>base': 0 }), m({ 'b>base': 0, 'c>b': 1 }))).toEqual(m({ 'c>b': 0 }));
+	});
+
+	it('draws from the base up, a hop at a time, when nothing was lit', () => {
+		expect(walk(m({}), m({ 'b>base': 0, 'c>b': 1 }))).toEqual(m({ 'b>base': 0, 'c>b': HOP }));
+	});
+
+	it('retracts from the top down when the new path is lower', () => {
+		expect(walk(m({ 'b>base': 0, 'c>b': 1, 'd>c': 2 }), m({ 'b>base': 0 }))).toEqual(m({ 'd>c': 0, 'c>b': HOP }));
+	});
+
+	it('shrinks to where two paths meet, then grows up the new one', () => {
+		expect(walk(m({ 'b>base': 0, 'c>b': 1 }), m({ 'b>base': 0, 'p>b': 1 }))).toEqual(m({ 'c>b': 0, 'p>b': HOP }));
+		expect(walk(m({ 'b>base': 0, 'c>b': 1 }), m({ 'x>base': 0 }))).toEqual(
+			m({ 'c>b': 0, 'b>base': HOP, 'x>base': 2 * HOP })
+		);
+	});
+
+	it('moves nothing when the lit path is the same', () => {
+		expect(walk(m({ 'b>base': 0, 'c>b': 1 }), m({ 'b>base': 0, 'c>b': 1 })).size).toBe(0);
 	});
 });
 

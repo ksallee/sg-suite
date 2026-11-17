@@ -5,7 +5,8 @@
 	//
 	// The rail follows the reading: a dotted track shows the whole stack, each wire draws as its
 	// panel scrolls in (a scroll-driven animation on the panel's view timeline, or a transition
-	// once `reached` says so), the rows being read get a band, and their path lights up from the base.
+	// once `reached` says so), the rows being read get a band and a lit dot. Hovering a row, or
+	// focusing it from the keyboard, lights its path down to the base.
 	import type { Project } from '$lib/pure/projects';
 	import { ArrowUpRight } from '@lucide/svelte';
 	import GithubMark from './GithubMark.svelte';
@@ -65,7 +66,7 @@
 				class:on={lit.edges.has(e.key)}
 				class:port
 				class:pending={pending(e.from)}
-				style="--d: {delay.get(e.to)! + 120}ms; --tl: --w-{e.from}; --hd: {lit.edges.get(e.key) ?? 0}ms"
+				style="--d: {delay.get(e.to)! + 120}ms; --tl: --w-{e.from}; --hd: {lit.hops.get(e.key) ?? 0}ms"
 			>
 				{#if !hero}<path class="edge-ghost" d={e.d} />{/if}
 				<path class="edge-base" d={e.d} pathLength={port ? undefined : 1} />
@@ -78,10 +79,12 @@
 			<g
 				class="dot-slot"
 				class:on={lit.nodes.has(r.name)}
+				class:here={here.includes(r.name)}
 				class:pending={pending(r.name)}
 				style="--d: {delay.get(r.name)}ms; --tl: --w-{r.name}"
 			>
 				{#if !hero}<circle class="dot-ghost" {cx} {cy} r={dotR - 0.75} />{/if}
+				<circle class="halo" {cx} {cy} r={dotR + 3.5} />
 				<g class="dot-wrap">
 					<circle class="dot g-{byName.get(r.name)!.group}" {cx} {cy} r={dotR} />
 				</g>
@@ -100,7 +103,7 @@
 				style="--indent: {X0 + r.lane * laneW + dotGap}px; --d: {delay.get(r.name)}ms"
 				onpointerenter={() => onactivate(r.name)}
 				onpointerleave={() => onactivate(null)}
-				onfocusin={() => onactivate(r.name)}
+				onfocusin={(e) => (e.target as Element).matches(':focus-visible') && onactivate(r.name)}
 				onfocusout={() => onactivate(null)}
 			>
 				<a class="name" href="#{p.name}" aria-current={reading ? 'location' : undefined}>
@@ -174,17 +177,24 @@
 		stroke: var(--lit);
 		stroke-width: 2.25;
 		opacity: 0;
-		transition: opacity 160ms var(--ease-out);
+		transition: opacity var(--ht) linear var(--hd);
 	}
-	/* A lit wire is one dash the length of the wire, so it can draw up along it, a hop at a time. */
+	/*
+	 * A lit wire is one dash the length of the wire, drawn from its lower end: lit, it grows up;
+	 * dark again, it shrinks back down. A transition, never a replayed animation, so a wire that
+	 * stays lit is never redrawn. `--hd` comes from the page's walk.
+	 */
 	.edge:not(.port) .edge-lit {
 		stroke-dasharray: 1 1;
+		stroke-dashoffset: 1;
+		opacity: 1;
+		transition: stroke-dashoffset var(--ht) linear var(--hd);
 	}
 	.edge.on .edge-lit {
 		opacity: 1;
 	}
 	.edge.on:not(.port) .edge-lit {
-		animation: lit-up var(--ht) var(--ease-out) var(--hd) both;
+		stroke-dashoffset: 0;
 	}
 	.dim .edge:not(.on) {
 		opacity: 0.3;
@@ -196,6 +206,20 @@
 	}
 	.dot-slot.on .dot {
 		stroke: var(--lit);
+	}
+	/* The row being read: its dot lit, a ring round it, whatever is hovered. */
+	.dot-slot.here .dot {
+		stroke: var(--lit);
+	}
+	.halo {
+		fill: none;
+		stroke: var(--lit);
+		stroke-width: 1.5;
+		opacity: 0;
+		transition: opacity 200ms var(--ease-out);
+	}
+	.dot-slot.here .halo {
+		opacity: 1;
 	}
 	.dot.g-foundation {
 		fill: var(--g-foundation);
@@ -467,14 +491,6 @@
 			opacity: 0;
 		}
 	}
-	@keyframes lit-up {
-		from {
-			stroke-dashoffset: 1;
-		}
-		to {
-			stroke-dashoffset: 0;
-		}
-	}
 
 	/* Reduced motion: nothing moves. Rows, dots and rails fade in, in the same order; paths fade. */
 	@media (prefers-reduced-motion: reduce) {
@@ -483,8 +499,13 @@
 		.hero .edge:not(.port) .edge-base {
 			animation-name: fade;
 		}
+		.edge:not(.port) .edge-lit {
+			stroke-dashoffset: 0;
+			opacity: 0;
+			transition: opacity 160ms var(--ease-out);
+		}
 		.edge.on:not(.port) .edge-lit {
-			animation: none;
+			opacity: 1;
 		}
 		/* Rail: what is not reached yet is hidden, not undrawn; it fades in. */
 		.rail .dot-slot.pending .dot-wrap {

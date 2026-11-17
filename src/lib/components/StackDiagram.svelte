@@ -42,7 +42,7 @@
 				class="edge"
 				class:on
 				class:port
-				style="--d: {(nodeDelay.get(e.to) ?? 0) + 140}ms; --hd: {lit.edges.get(e.key) ?? 0}ms"
+				style="--d: {(nodeDelay.get(e.to) ?? 0) + 140}ms; --hd: {lit.hops.get(e.key) ?? 0}ms"
 			>
 				<!-- A dashed port wire keeps its own length: `pathLength` would stretch its dashes. -->
 				<path class="edge-base" d={e.d} pathLength={port ? undefined : 1} />
@@ -61,7 +61,7 @@
 			aria-label={n.name}
 			onpointerenter={() => onactivate(n.name)}
 			onpointerleave={() => onactivate(null)}
-			onfocus={() => onactivate(n.name)}
+			onfocus={(e) => e.currentTarget.matches(':focus-visible') && onactivate(n.name)}
 			onblur={() => onactivate(null)}
 		>
 			<g transform="translate({n.x - NODE_W / 2} {n.y})">
@@ -137,17 +137,24 @@
 		stroke: var(--lit);
 		stroke-width: 2.5;
 		opacity: 0;
-		transition: opacity 160ms var(--ease-out);
+		transition: opacity var(--ht) linear var(--hd);
 	}
-	/* A lit wire is one dash the length of the wire, so it can draw up along it, a hop at a time. */
+	/*
+	 * A lit wire is one dash the length of the wire, drawn from its lower end: lit, it grows up;
+	 * dark again, it shrinks back down. A transition, never a replayed animation, so a wire that
+	 * stays lit is never redrawn. `--hd` comes from the page's walk.
+	 */
 	.edge:not(.port) .edge-lit {
 		stroke-dasharray: 1 1;
+		stroke-dashoffset: 1;
+		opacity: 1;
+		transition: stroke-dashoffset var(--ht) linear var(--hd);
 	}
 	.edge.on .edge-lit {
 		opacity: 1;
 	}
 	.edge.on:not(.port) .edge-lit {
-		animation: lit-up var(--ht) var(--ease-out) var(--hd) both;
+		stroke-dashoffset: 0;
 	}
 	.dim .edge:not(.on) {
 		opacity: 0.3;
@@ -259,14 +266,6 @@
 			opacity: 0;
 		}
 	}
-	@keyframes lit-up {
-		from {
-			stroke-dashoffset: 1;
-		}
-		to {
-			stroke-dashoffset: 0;
-		}
-	}
 
 	/* Reduced motion: nothing moves. Things fade in, in the same order; a lit path fades. */
 	@media (prefers-reduced-motion: reduce) {
@@ -275,8 +274,13 @@
 			animation-name: fade;
 			animation-timing-function: ease-out;
 		}
+		.edge:not(.port) .edge-lit {
+			stroke-dashoffset: 0;
+			opacity: 0;
+			transition: opacity 160ms var(--ease-out);
+		}
 		.edge.on:not(.port) .edge-lit {
-			animation: none;
+			opacity: 1;
 		}
 		.node:hover .lift,
 		.node:focus-visible .lift {
