@@ -10,8 +10,8 @@ export const SITE = 'https://sg-suite.vercel.app';
 export const REPO = 'https://github.com/ksallee/sg-suite';
 const NAME = 'sg-suite';
 export const LINE = 'The sg- projects on one page: tools and libraries for Flow Production Tracking, formerly ShotGrid.';
-export const DESCRIPTION = `${LINE} The recorded REST API, a standalone mockgun, React, Svelte and Qt widgets, four web apps and ComfyUI nodes.`;
-const IMAGE_ALT = 'sg-suite: a node graph of the nine sg- projects, sg-groundtruth at the base.';
+export const DESCRIPTION = `${LINE} The recorded REST API, a standalone mockgun, React, Svelte and Qt widgets, five web apps and ComfyUI nodes.`;
+const IMAGE_ALT = 'sg-suite: a node graph of the ten sg- projects, sg-groundtruth at the base.';
 
 const esc = (s: string): string => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -87,7 +87,7 @@ export function llmsTxt(): string {
 		'',
 		`> ${LINE}`,
 		'',
-		'Nine open source projects. sg-groundtruth is the base: it records how the Flow Production Tracking REST API answers. sg-mockgun, sg-widgets and sg-comfyui build on it; sg-widgets-qt ports sg-widgets to Qt; the four apps build on sg-widgets.',
+		'Ten open source projects. sg-groundtruth is the base: it records how the Flow Production Tracking REST API answers. sg-mockgun, sg-widgets and sg-comfyui build on it; sg-widgets-qt ports sg-widgets to Qt; the five apps build on sg-widgets.',
 		''
 	];
 	for (const { group, projects: list } of grouped()) {
