@@ -8,7 +8,7 @@ const top = layout.nodes.filter((n) => n.layer === layout.layers - 1).sort((a, b
 describe('heroLayout', () => {
 	it('lays the hero out in its own box: three layers, the apps on top', () => {
 		expect(layout.layers).toBe(3);
-		expect(top.map((n) => n.name)).toEqual(['sg-notes', 'sg-onset', 'sg-fields-setup', 'sg-task-templates']);
+		expect(top.map((n) => n.name)).toEqual(['sg-notes', 'sg-onset', 'sg-fields-setup', 'sg-task-templates', 'sg-bids']);
 		for (const n of layout.nodes) {
 			expect(n.x - HERO.nodeW / 2).toBeGreaterThanOrEqual(0);
 			expect(n.x + HERO.nodeW / 2).toBeLessThanOrEqual(HERO.width);
@@ -19,14 +19,14 @@ describe('heroLayout', () => {
 describe('titleGrid', () => {
 	const g = titleGrid(layout);
 
-	it('spans the title from the first top node’s left edge to the third one’s right edge', () => {
+	it('spans the title from the first top node’s left edge to the right edge of the one before last', () => {
 		expect(g.left).toBeCloseTo(top[0].x - HERO.nodeW / 2);
-		expect(g.titleW).toBeCloseTo(top[2].x + HERO.nodeW / 2 - g.left);
+		expect(g.titleW).toBeCloseTo(top[top.length - 2].x + HERO.nodeW / 2 - g.left);
 	});
 
 	it('gives the line the last column, and keeps the grid symmetric', () => {
 		expect(g.lineW).toBe(HERO.nodeW);
-		expect(top[3].x + HERO.nodeW / 2 + g.left).toBeCloseTo(HERO.width);
+		expect(top[top.length - 1].x + HERO.nodeW / 2 + g.left).toBeCloseTo(HERO.width);
 	});
 });
 

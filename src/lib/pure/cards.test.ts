@@ -19,7 +19,8 @@ describe('downstream', () => {
 			'sg-notes',
 			'sg-onset',
 			'sg-fields-setup',
-			'sg-task-templates'
+			'sg-task-templates',
+			'sg-bids'
 		]);
 		expect(downstream('sg-groundtruth', relations)).toEqual(['sg-mockgun', 'sg-widgets', 'sg-comfyui']);
 	});

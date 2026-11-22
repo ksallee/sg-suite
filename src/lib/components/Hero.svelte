@@ -1,6 +1,6 @@
 <script lang="ts">
 	// The top of the page. `sg-suite` in Geist Mono, set on the graph's grid: it spans the top
-	// layer's first three columns, and the line sits in the fourth, on its baseline. Then the
+	// layer's first columns, and the line sits in the last, on its baseline. Then the
 	// graph (a tree on a phone) and the legend.
 	import type { Project } from '$lib/pure/projects';
 	import { grouped } from '$lib/pure/projects';
