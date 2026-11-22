@@ -227,6 +227,23 @@ export const projects: Project[] = [
 		}
 	},
 	{
+		name: 'sg-bids',
+		line: 'VFX bid rounds: a request built from Shots and Assets, vendors answer through a link, the award is written to Flow PT.',
+		problem: 'Bid rounds run on spreadsheets and email. Vendors have no Flow PT account, their numbers are compared by hand, and the award is typed back in.',
+		fix: 'Build the request from Shots and Assets or a breakdown. Vendors answer through a link. Compare in one currency, award, and Flow PT is updated.',
+		repo: gh('sg-bids'),
+		site: 'https://sg-bids.vercel.app',
+		group: 'apps',
+		license: 'MIT',
+		image: {
+			src: '/screens/sg-bids.webp',
+			alt: 'A draft request: two bids of shots in one table, with its details and vendors beside it',
+			width: 1440,
+			height: 900,
+			from: 'site'
+		}
+	},
+	{
 		name: 'sg-comfyui',
 		line: 'ComfyUI nodes and a sidebar tab that publish a generation as a Version, find Versions and load them back.',
 		problem: 'On a big project, the right Version is hard to find from ComfyUI. What it makes leaves with no record of model, prompt or seed.',
@@ -266,7 +283,8 @@ export const relations: Relation[] = [
 	{ from: 'sg-notes', to: 'sg-widgets', kind: 'on' },
 	{ from: 'sg-onset', to: 'sg-widgets', kind: 'on' },
 	{ from: 'sg-fields-setup', to: 'sg-widgets', kind: 'on' },
-	{ from: 'sg-task-templates', to: 'sg-widgets', kind: 'on' }
+	{ from: 'sg-task-templates', to: 'sg-widgets', kind: 'on' },
+	{ from: 'sg-bids', to: 'sg-widgets', kind: 'on' }
 ];
 
 /** The groups in order, each with its projects in list order. */

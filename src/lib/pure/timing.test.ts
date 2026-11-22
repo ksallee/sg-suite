@@ -104,7 +104,7 @@ describe('nodeDelays', () => {
 		const top = nodes.filter((n) => n.layer === 2).sort((a, b) => a.slot - b.slot);
 		const [end, mid] = [d.get(top[0].name)!, d.get(top[1].name)!];
 		expect(mid).toBeLessThan(end);
-		expect(d.get(top[0].name)).toBe(d.get(top[3].name));
+		expect(d.get(top[0].name)).toBe(d.get(top[top.length - 1].name));
 	});
 });
 

@@ -15,6 +15,7 @@ Live at [sg-suite.vercel.app](https://sg-suite.vercel.app).
 | [sg-onset](https://github.com/ksallee/sg-onset) | On-set VFX data capture: slates, takes, setups, lenses. Offline-first PWA, iPad first. | [sg-onset.vercel.app](https://sg-onset.vercel.app) |
 | [sg-fields-setup](https://github.com/ksallee/sg-fields-setup) | Named sets of field definitions: import from spreadsheets, compare with a live site, install. | [sg-fields-setup.vercel.app](https://sg-fields-setup.vercel.app) |
 | [sg-task-templates](https://github.com/ksallee/sg-task-templates) | Apply a Task Template to entities that already have Tasks. Only the missing Tasks are created. | [sg-task-templates.vercel.app](https://sg-task-templates.vercel.app) |
+| [sg-bids](https://github.com/ksallee/sg-bids) | VFX bid rounds: a request built from Shots and Assets, vendors answer through a link, the award is written to Flow PT. | [sg-bids.vercel.app](https://sg-bids.vercel.app) |
 | [sg-comfyui](https://github.com/ksallee/sg-comfyui) | ComfyUI nodes and a sidebar tab that publish a generation as a Version, find Versions and load them back. | [sg-comfyui.vercel.app](https://sg-comfyui.vercel.app) |
 
 ## Adding a project
